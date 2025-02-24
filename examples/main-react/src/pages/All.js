@@ -5,7 +5,7 @@ import { SearchTreeContext } from '../components/SearchTree/SearchTreeContext';
 import { categoryConfig } from './treeConfig';
 
 import { SearchTreeProvider } from '../components/SearchTree/SeatchTreeProvider'
-import generateTreeNode from '../components/SearchTree/generateData'
+import generateTreeData from '../components/SearchTree/generateData'
 
 
 const CategoryTree = () => {
@@ -22,10 +22,10 @@ const CategoryTree = () => {
   获取数据
   */
   const handleInitData = async () => {
-    const result = generateTreeNode(100, 4, 3);
+    const result = generateTreeData(100, 8, 9);
     dispatch({
       type: 'setTreeData',
-      treeData: result
+      treeData: [result]
     });
   };
 

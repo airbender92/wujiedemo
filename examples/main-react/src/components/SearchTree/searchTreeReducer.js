@@ -100,8 +100,11 @@ export const searchTreeReducer = (state, action) => {
             const { selectedKeys } = action;
             const { dataFlatList, toggleClick, treeData, treeProps: { key: treeKey } } = state;
             const matched = dataFlatList.find(item => item[treeKey] === selectedKeys[0]);
+            console.time('calcParentNode');
             // 获取父节点node
             const parentNode = getParentNode(selectedKeys[0], treeData, treeKey);
+            console.timeEnd('calcParentNode')
+            console.log('parentNode', parentNode)
             return {
                 ...state,
                 selectedKeys,
@@ -323,17 +326,17 @@ function handleOnDrop(info, state) {
     return { data, next: true };
 }
 
-function getParentNode(nodeKey, treeData, treeKey) {
-    let parentNode;
-    for (let i = 0; i < treeData.length; i++) {
-        const node = treeData[i];
-        if (node.children) {
-            if (node.children.some(item => item[treeKey] == nodeKey)) {
-                parentNode = node;
-            } else if (getParentNode(nodeKey, node.children, treeKey)) {
-                parentNode = getParentNode(nodeKey, node.children, treeKey)
+
+function getParentNode (nodeKey, treeData, treeKey) {
+    const stack = [...treeData];
+    while(stack.length > 0){
+        const node = stack.pop();
+        if(node.children) {
+            if(node.children.some(item => item[treeKey] === nodeKey)) {
+                return node;
             }
+            stack.push(...node.children)
         }
     }
-    return parentNode;
+    return null;
 }

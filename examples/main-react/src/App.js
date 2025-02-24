@@ -10,6 +10,7 @@ import {
 
 import WujieReact from "wujie-react";
 import React, { useState } from "react";
+import 'antd/dist/antd.css'; 
 import Home from "./pages/Home";
 import All from "./pages/All.js";
 import Button from "antd/es/button";

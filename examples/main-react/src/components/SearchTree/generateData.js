@@ -9,15 +9,17 @@ function generateRandomTitle() {
 }
 
 // 递归生成树节点
-function generateTreeNode(depth, maxDepth, childCount) {
+function generateTreeNode(depth, maxDepth, childCount, remainingNodes) {
     const node = {
         key: Math.random().toString(36).substr(2, 9),
         title: generateRandomTitle()
     };
-    if (depth < maxDepth) {
+    if (depth < maxDepth && remainingNodes > 0) {
         node.children = [];
-        for (let i = 0; i < childCount; i++) {
-            node.children.push(generateTreeNode(depth + 1, maxDepth, childCount));
+        const childrenToGenerate = Math.min(childCount, remainingNodes);
+        for (let i = 0; i < childrenToGenerate; i++) {
+            const nodesLeft = remainingNodes - i - 1;
+            node.children.push(generateTreeNode(depth + 1, maxDepth, childCount, Math.floor(nodesLeft / childCount)));
         }
     }
     return node;
@@ -30,11 +32,15 @@ function generateTreeData(totalNodes, maxDepth, childCount) {
         title: 'Root Node',
         children: []
     };
-    const nodesPerLevel = Math.floor(totalNodes / (Math.pow(childCount, maxDepth - 1)));
-    for (let i = 0; i < nodesPerLevel; i++) {
-        root.children.push(generateTreeNode(1, maxDepth, childCount));
+    let remainingNodes = totalNodes;
+    while (remainingNodes > 0) {
+        const nodesToGenerate = Math.min(childCount, remainingNodes);
+        for (let i = 0; i < nodesToGenerate; i++) {
+            root.children.push(generateTreeNode(1, maxDepth, childCount, Math.floor((remainingNodes - i - 1) / childCount)));
+        }
+        remainingNodes -= nodesToGenerate;
     }
     return root;
 }
 
-export default generateTreeNode;
+export default generateTreeData;

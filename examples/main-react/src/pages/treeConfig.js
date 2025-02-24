@@ -8,7 +8,7 @@ export const categoryConfig = {
     defaultExpandAll: true,
     placeholder: '请输入分类名称',
     rootKey: '-1',
-    treeProps: { key: 'id', title: 'paramClassificationName' },
+    treeProps: { key: 'key', title: 'title' },
     btns: [
         {
             show: true,

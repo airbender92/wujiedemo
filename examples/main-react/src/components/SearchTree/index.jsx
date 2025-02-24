@@ -323,17 +323,37 @@ return (
 
 export default SearchTree
 
-function getParentKey(key, tree, treeKey) {
+function getParentKey2(key, tree, treeKey) {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
         const node = tree[i];
         if (node.children) {
             if (node.children.some((item) => item[treeKey] === key)) {
                 parentKey = node[treeKey];
-            } else if(getParentKey(key, node.children, treeKey)){
-                parentKey = getParentKey(key, node.children, treeKey);
+            } else if(getParentKey2(key, node.children, treeKey)){
+                parentKey = getParentKey2(key, node.children, treeKey);
             }
         }
     }
+    return parentKey;
+}
+
+function getParentKey(key, tree, treeKey) {
+    const stack = [...tree]; // 使用栈来模拟递归调用
+    let parentKey = null;
+
+    while (stack.length > 0) {
+        const node = stack.pop();
+        if (node.children) {
+            if (node.children.some(item => item[treeKey] === key)) {
+                parentKey = node[treeKey];
+                break;
+            } else {
+                // 将子节点压入栈中继续遍历
+                stack.push(...node.children);
+            }
+        }
+    }
+
     return parentKey;
 }

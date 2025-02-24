@@ -9,7 +9,7 @@
     "build": "turbo run build --filter=\"wujie-*\" --filter=wujie",
     "clean": "rimraf node_modules **/*/node_modules",
     "test": "turbo run test",
-    "lint": "turbo run lint --filter wujie",
+    "lint": "turbo run lint",
     "commitlint": "commitlint -E COMMIT_EDITMSG_PATH",
     "husky-commitlint": "commitlint -e",
     "prepare": "husky install"
